@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alterar</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <br>
+    <div align="center">
+        <label>ID:</label>
+        <input type="text" id="txtid">
+        <button id="btnid" class="btn btn-primary" style="position: relative; left: 10px;">Consulta</button> <br><br>
+        <button id="btnvoltar" class="btn btn-secondary" style="position: relative; top: -6px;">Voltar</button> <br><br>
+    </div>
+
+
+    <div id="dadosusu" align="center" style="display: none;">
+        <label>Nome:</label>
+        <input readonly="true" type="text" id="txtnome" style="position: relative;left: 10px;">
+        <br><br>
+        <label>Telefone:</label>
+        <input readonly="true" type="text" id="txttelefone" style="position: relative;left: 2px;">
+        <br><br>
+        <label>Email:</label>
+        <input readonly="true" type="text" id="txtemail" style="position: relative;left: 13px;">
+        <br><br>
+        <label>Descrição:</label>
+        <textarea readonly="true" class="form-control" type="text" id="txtdescricao" rows="5" style="width: 70%;"></textarea>
+    </div>
+
+    <script>
+        var id;
+
+        $("#btnid").click(function() {
+
+            $("#dadosusu").css("display", "none");
+
+            id = $("#txtid").val();
+
+            if (id != "") {
+                var pagina = "mostradados.php";
+
+                $.ajax({
+                    method: "POST",
+                    url: pagina,
+                    data: {
+                        id
+                    },
+                    success: function(retorna) {
+
+                        var retornojson = JSON.parse(retorna);
+                        var nome = retornojson.nome;
+                        var telefone = retornojson.telefone;
+                        var email = retornojson.email;
+                        var descricao = retornojson.descricao;
+
+                        $("#dadosusu").css("display", "block");
+                        $("#txtnome").val(nome);
+                        $("#txttelefone").val(telefone);
+                        $("#txtemail").val(email);
+                        $("#txtdescricao").val(descricao);
+
+                    },
+                    error: function() {
+                        alert("Não foi possível realizar a consulta");
+                    }
+                });
+            }
+        });
+
+        $("#btnvoltar").click(function() {
+            window.location.href = "index.html";
+        });
+    </script>
+
+</body>
+
+</html>
